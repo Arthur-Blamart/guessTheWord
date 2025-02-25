@@ -10,10 +10,9 @@ function App() {
   const essaie = 5;
 
   const [mat, setMatrix] = useState(
-    Array.from({ length: essaie }, () => Array(gridSize).fill("N"))
+    new Array(gridSize * essaie).fill('N')
   )
-
-  console.log("Prout : "+mat)
+  
 
   return (
     <>
@@ -27,9 +26,8 @@ function App() {
 
 export default App
 
-function Grid(nbLetter, nbRow, mat){
-  console.log(mat)
-  let matrix = mat
+function Grid({ nbLetter, nbRow, matrix }){
+  console.log("Matrice : "+matrix)
   nbLetter = 7;
   nbRow = 5;
 
