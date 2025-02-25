@@ -1,8 +1,11 @@
-# React + Vite
+# Guess The word
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Contexte :
+Projet personnel de refaire le celebre Wordle en utilisant React.
 
-Currently, two official plugins are available:
+## Le jeu :
+Un mot secret est sélectionné, et le but du joueur est de le deviner en un nombre limité ou illimité d'essais.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+À chaque essai, le joueur pourra voir quelles lettres sont correctement placées, quelles lettres sont présentes dans le mot mais mal placées, et quelles lettres ne sont pas du tout dans le mot secret.
+
+Pour cela, un code couleur sera utilisé : vert pour une lettre bien placée, jaune pour une lettre mal placée, et rouge pour une lettre absente du mot.
