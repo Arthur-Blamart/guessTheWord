@@ -9,8 +9,11 @@ function App() {
   const gridSize = secretWord.length;
   const essaie = 5;
 
-  const [mat, setMatrix] = useState(new Array())
+  const [mat, setMatrix] = useState(
+    Array.from({ length: essaie }, () => Array(gridSize).fill("N"))
+  )
 
+  console.log("Prout : "+mat)
 
   return (
     <>
@@ -25,11 +28,11 @@ function App() {
 export default App
 
 function Grid(nbLetter, nbRow, mat){
-  matrix = mat
+  console.log(mat)
+  let matrix = mat
   nbLetter = 7;
   nbRow = 5;
 
-  console.log(matrix);
   for(let i = 0; i< nbRow*nbLetter ; i++){
     matrix.push("0");
   }
