@@ -6,7 +6,7 @@ import './App.css'
 const empty_char = 'N'; //Caractère vide dans la matrice
 
 function App() {
-  const secretWord = "Quentin".toUpperCase();
+  const secretWord = "zizi".toUpperCase();
   const gridSize = secretWord.length;
   const essaie = 5;
 
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-          <Grid nbLetter="5" nbRow="8" matrix={mat}/>
+          <Grid nbLetter={secretWord.length} nbRow={essaie} matrix={mat}/>
         <div>
           <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} updateMatrix={setMatrix}/>
         </div>
@@ -29,8 +29,6 @@ export default App
 
 function Grid({ nbLetter, nbRow, matrix }){
   console.log("Matrice : "+matrix)
-  nbLetter = 7;
-  nbRow = 5;
 
   for(let i = 0; i< nbRow*nbLetter ; i++){
     matrix.push("0");
