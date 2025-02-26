@@ -6,7 +6,7 @@ import './App.css'
 const empty_char = 'N'; //Caractère vide dans la matrice
 
 function App() {
-  const secretWord = "Quentin";
+  const secretWord = "Quentin".toUpperCase();
   const gridSize = secretWord.length;
   const essaie = 5;
 
@@ -84,7 +84,7 @@ function InputArea({motSecret, matrix, nb_column, updateMatrix}){
 function confirmEntry(motSecret, matrix, nb_column, updateMatrix){
   let elt = document.getElementById("inputText");
   let elt_error = document.getElementById("Error_component")
-  let valeur = elt.value;
+  let valeur = elt.value.toUpperCase();
   if(valeur.length == motSecret.length){
     elt_error.innerHTML = "";
     console.log("Le mot essayé est : "+valeur);
