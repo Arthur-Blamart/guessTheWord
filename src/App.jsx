@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-const empty_char = 'N'; //Caractère vide dans la matrice
+const empty_char = ' '; //Caractère vide dans la matrice
 
 function App() {
   const secretWord = "zizi".toUpperCase();
@@ -55,7 +55,7 @@ function Square({ letter }) {
           height: "50px",
           display: "flex",
           alignItems: "center",
-          color: "green",
+          color: "black",
           justifyContent: "center",
           border: "2px solid black",
           backgroundColor: "white",
@@ -71,7 +71,11 @@ function Square({ letter }) {
 function InputArea({motSecret, matrix, nb_column, updateMatrix}){
   return (
     <div>
-      <input type="text" id="inputText" ></input>
+      <input type="text" id="inputText" onKeyDown={(event) => {
+        if(event.code == "Enter"){
+          confirmEntry(motSecret, matrix, nb_column, updateMatrix);
+        }
+      }}></input>
       <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, nb_column, updateMatrix)}} >Ok</button>
       <h2 id="Error_component" style={{color:"#ff5733"}}>Prout</h2>
       </div>
