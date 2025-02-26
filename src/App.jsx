@@ -96,12 +96,47 @@ function confirmEntry(motSecret, matrix, nb_column, updateMatrix, colorMatrix, u
     elt_error.innerHTML = "";
     console.log("Le mot essayé est : "+valeur);
     elt.value = "";
-    writeInBoard(matrix, nb_column, updateMatrix, valeur, colorMatrix, updateColorMatrix);
+    writeInBoard(matrix, nb_column, updateMatrix, valeur, colorMatrix, updateColorMatrix, motSecret);
   }
   else{
     elt_error.innerHTML = "Entrée pas de la bonne taille";
     let matrix2 = new Array()
   }
+}
+
+function chooseColor(motSecret, motEssaie){
+  let n = motSecret.length;
+
+  let couleur = new Array(n).fill("white");
+  for (let i = 0; i < n; i++){
+    if(motSecret[i] == motEssaie[i]){
+      couleur[i] = "green";
+    }
+    else if(!(motSecret.includes(motEssaie[i]))){
+      couleur[i] = "red";
+    }
+    else{// On doit mettre jaune ou rouge, on repassera après pour verifier
+      couleur[i] = "blue";
+    }
+  }
+
+  for (let i = 0; i < n; i++){
+    if(couleur[i] == "blue"){
+      for (let j = 0; j < n; j++){
+        if(motSecret[j] == motEssaie[i] && couleur[j] == "red"){
+          couleur[i] = "yellow";
+          break;
+        }
+      }
+    }
+  }
+  for (let i = 0; i < n; i++){
+    if(couleur[i] == "blue"){
+      couleur[i] = "red";
+    }
+  }
+  return couleur;
+
 }
 
 //Il faut regarder quelles lignes sont remplies pour trouver où ajouter des trucs
@@ -113,14 +148,19 @@ function whichRowToWrite(matrix, nb_column){
   }
 }
 
-function writeInBoard(matrix, nb_column, updateMatrix, text, colorMatrix, updateColorMatrix){
+function writeInBoard(matrix, nb_column, updateMatrix, text, colorMatrix, updateColorMatrix, motSecret){
   let row = whichRowToWrite(matrix, nb_column);
   console.log("Ligne à écrire : "+row);
   const nouvelle_matrice = [...matrix];
   const nouvelle_couleurs = [...colorMatrix];
   for (let i = 0; i < text.length; i++){
     nouvelle_matrice[row*nb_column+i] = text[i];
-    nouvelle_couleurs[row*nb_column+i] = "green";
+  }
+
+  let couleur = chooseColor(motSecret, text);
+
+  for(let i=0; i<nb_column; i++){
+    nouvelle_couleurs[row*nb_column+i] = couleur[i];
   }
   updateMatrix(nouvelle_matrice);
   updateColorMatrix(nouvelle_couleurs);
