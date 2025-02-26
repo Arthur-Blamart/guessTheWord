@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+const empty_char = 'N'; //Caractère vide dans la matrice
 
 function App() {
   const secretWord = "Quentin";
@@ -10,7 +11,7 @@ function App() {
   const essaie = 5;
 
   const [mat, setMatrix] = useState(
-    new Array(gridSize * essaie).fill('N')
+    new Array(gridSize * essaie).fill(empty_char)
   )
   
 
@@ -18,7 +19,7 @@ function App() {
     <>
           <Grid nbLetter="5" nbRow="8" matrix={mat}/>
         <div>
-          <InputArea motSecret={secretWord} matrix={mat}  updateMatrix={setMatrix}/>
+          <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} updateMatrix={setMatrix}/>
         </div>
     </>
   )
@@ -69,20 +70,18 @@ function Square({ letter }) {
   );
 }
 
-function InputArea(motSecret, matrix, updateMatrix){
+function InputArea({motSecret, matrix, nb_column, updateMatrix}){
   return (
     <div>
       <input type="text" id="inputText" ></input>
-      <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, updateMatrix)}} >Ok</button>
+      <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, nb_column, updateMatrix)}} >Ok</button>
       <h2 id="Error_component" style={{color:"#ff5733"}}>Prout</h2>
       </div>
 
   );
 }
 
-function confirmEntry(motSecret, matrix, updateMatrix){
-  motSecret = motSecret.motSecret//Parce que probleme d'encapsulage
-
+function confirmEntry(motSecret, matrix, nb_column, updateMatrix){
   let elt = document.getElementById("inputText");
   let elt_error = document.getElementById("Error_component")
   let valeur = elt.value;
@@ -90,7 +89,7 @@ function confirmEntry(motSecret, matrix, updateMatrix){
     elt_error.innerHTML = "";
     console.log("Le mot essayé est : "+valeur);
     elt.value = "";
-    writeInBoard(matrix, updateMatrix)
+    writeInBoard(matrix, nb_column, updateMatrix, valeur);
   }
   else{
     elt_error.innerHTML = "Entrée pas de la bonne taille";
@@ -98,11 +97,21 @@ function confirmEntry(motSecret, matrix, updateMatrix){
   }
 }
 
-//Il faut regarder quels colonnes sont remplies pour trouver où ajouter des trucs
-function whichRowToWrite(matrix){
-  console.log(matrix)
+//Il faut regarder quelles lignes sont remplies pour trouver où ajouter des trucs
+function whichRowToWrite(matrix, nb_column){
+  for (let i = 0; i < matrix.length; i++){
+    if(matrix[i] == empty_char){
+      return i/nb_column;
+    }
+  }
 }
 
-function writeInBoard(matrix, updateMatrix){
-  let row = 0;
+function writeInBoard(matrix, nb_column, updateMatrix, text){
+  let row = whichRowToWrite(matrix, nb_column);
+  console.log("Ligne à écrire : "+row);
+  const nouvelle_matrice = [...matrix];
+  for (let i = 0; i < text.length; i++){
+    nouvelle_matrice[row*nb_column+i] = text[i];
+  }
+  updateMatrix(nouvelle_matrice);
 }
