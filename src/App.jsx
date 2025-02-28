@@ -11,7 +11,7 @@ import loseGif from './assets/lose.gif' // Importez le GIF de défaite
 const empty_char = ' '; //Caractère vide dans la matrice
 
 function App() {
-  const secretWord = "zizi".toUpperCase();
+  const secretWord = "Quentin".toUpperCase();
   const gridSize = secretWord.length;
   const essaie = 5;
 
