@@ -1,3 +1,6 @@
+export default App
+
+
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -21,15 +24,37 @@ function App() {
 
   return (
     <>
+        <div style={{
+          borderStyle: 'hidden',
+          display:'flex',
+          
+          justifyContent: 'center',
+          alignItems: 'center'
+          }}>
           <Grid nbLetter={secretWord.length} nbRow={essaie} matrix={mat} colorMatrix={colorMatrix}/>
-        <div>
+          </div>
+          <div style={{
+          borderStyle: 'hidden',
+          display:'flex',
+          
+          justifyContent: 'center',
+          alignItems: 'center'
+          }}>
           <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} updateMatrix={setMatrix} colorMatrix={colorMatrix} updateColorMatrix={setColorMatrix}/>
         </div>
+        
     </>
   )
 }
 
-export default App
+function WinScreen(){
+  return(
+    <div>
+      <h1>Bravo, vous avez gagné !</h1>
+      <div class="tenor-gif-embed" data-postid="16606050094708454978" data-share-method="host" data-aspect-ratio="1.02469" data-width="100%"><a href="https://tenor.com/view/cat-gif-16606050094708454978">Cat Sticker</a>from <a href="https://tenor.com/search/cat-stickers">Cat Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    </div>
+  )
+}
 
 function Grid({ nbLetter, nbRow, matrix, colorMatrix }) {
   console.log("Matrice : "+matrix)
