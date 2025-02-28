@@ -5,6 +5,8 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import winGif from './assets/win.gif' // Importez le GIF de victoire
+import loseGif from './assets/lose.gif' // Importez le GIF de défaite
 
 const empty_char = ' '; //Caractère vide dans la matrice
 
@@ -23,6 +25,7 @@ function App() {
 
   const [jeuFinie, setJeuFinie] = useState(false);
   const [tentativeRestantes, setTentativeRestantes] = useState(essaie-1);
+  const [partieGagnee, setPartieGagnee] = useState(false);
   
 
   return (
@@ -44,7 +47,7 @@ function App() {
           alignItems: 'center',
           visibility: (!jeuFinie)?'visible':'collapse'
           }}>
-          <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} nbRow={essaie} updateMatrix={setMatrix} colorMatrix={colorMatrix} updateColorMatrix={setColorMatrix} setJeuFinie={setJeuFinie} tentativeRestantes={tentativeRestantes} setTentativeRestantes={setTentativeRestantes}/> 
+          <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} nbRow={essaie} updateMatrix={setMatrix} colorMatrix={colorMatrix} updateColorMatrix={setColorMatrix} setJeuFinie={setJeuFinie} tentativeRestantes={tentativeRestantes} setTentativeRestantes={setTentativeRestantes} setPartieGagnee={setPartieGagnee}/> 
         </div>
         <div style={{
           borderStyle: 'hidden',
@@ -54,20 +57,29 @@ function App() {
           alignItems: 'center',
           visibility: (jeuFinie)?'visible':'hidden'
           }}>
-            <EcranFin/>
+            <EcranFin partieGagnee={partieGagnee} />
         </div>
         
     </>
   )
 }
 
-function EcranFin(){
-  return(
-    <div>
-      <h1>Bravo, vous avez gagné !</h1>
-      <div class="tenor-gif-embed" data-postid="16606050094708454978" data-share-method="host" data-aspect-ratio="1.02469" data-width="100%"><a href="https://tenor.com/view/cat-gif-16606050094708454978">Cat Sticker</a>from <a href="https://tenor.com/search/cat-stickers">Cat Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-    </div>
-  )
+function EcranFin({ partieGagnee }) {
+  if (partieGagnee) {
+    return (
+      <div>
+        <h1>Bravo, vous avez gagné !</h1>
+        <img src={winGif} alt="Victoire" />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h1>Vous avez perdu lol (trop nul) !</h1>
+        <img src={loseGif} alt="Défaite" />
+      </div>
+    );
+  }
 }
 
 function Grid({ nbLetter, nbRow, matrix, colorMatrix }) {
@@ -110,22 +122,22 @@ function Square({ letter, color }) {
   );
 }
 
-function InputArea({motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes}){
+function InputArea({motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes, setPartieGagnee}){
   return (
     <div>
       <input type="text" id="inputText" onKeyDown={(event) => {
         if(event.code == "Enter"){
-          confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes);
+          confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes, setPartieGagnee);
         }
       }}></input>
-      <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes)}} >Ok</button>
+      <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes, setPartieGagnee)}} >Ok</button>
       <h2 id="Error_component" style={{color:"#ff5733"}}>Prout</h2>
       </div>
 
   );
 }
 
-function confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes){
+function confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes, setPartieGagnee){
   let elt = document.getElementById("inputText");
   let elt_error = document.getElementById("Error_component")
   let valeur = elt.value.toUpperCase();
@@ -138,6 +150,7 @@ function confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMa
     setTentativeRestantes(tentativeRestantes-1);
     //On vérifie si la partie est finie, soit on a trouvé le mot, soit on a rempli toutes les lignes
     if(motSecret == valeur || tentativeRestantes==0){
+      setPartieGagnee(motSecret == valeur);
       console.log("Partie finie");
       setJeuFinie(true);
     }
