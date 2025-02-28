@@ -15,11 +15,14 @@ function App() {
 
   const [mat, setMatrix] = useState(
     new Array(gridSize * essaie).fill(empty_char)
-  )
+  );
 
   const [colorMatrix, setColorMatrix] = useState(
     new Array(gridSize * essaie).fill("white")
-  )
+  );
+
+  const [jeuFinie, setJeuFinie] = useState(false);
+  const [tentativeRestantes, setTentativeRestantes] = useState(essaie-1);
   
 
   return (
@@ -29,7 +32,7 @@ function App() {
           display:'flex',
           
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
           }}>
           <Grid nbLetter={secretWord.length} nbRow={essaie} matrix={mat} colorMatrix={colorMatrix}/>
           </div>
@@ -38,16 +41,27 @@ function App() {
           display:'flex',
           
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          visibility: (!jeuFinie)?'visible':'collapse'
           }}>
-          <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} updateMatrix={setMatrix} colorMatrix={colorMatrix} updateColorMatrix={setColorMatrix}/>
+          <InputArea motSecret={secretWord} matrix={mat} nb_column={gridSize} nbRow={essaie} updateMatrix={setMatrix} colorMatrix={colorMatrix} updateColorMatrix={setColorMatrix} setJeuFinie={setJeuFinie} tentativeRestantes={tentativeRestantes} setTentativeRestantes={setTentativeRestantes}/> 
+        </div>
+        <div style={{
+          borderStyle: 'hidden',
+          display:'flex',
+          
+          justifyContent: 'center',
+          alignItems: 'center',
+          visibility: (jeuFinie)?'visible':'hidden'
+          }}>
+            <EcranFin/>
         </div>
         
     </>
   )
 }
 
-function WinScreen(){
+function EcranFin(){
   return(
     <div>
       <h1>Bravo, vous avez gagné !</h1>
@@ -57,7 +71,6 @@ function WinScreen(){
 }
 
 function Grid({ nbLetter, nbRow, matrix, colorMatrix }) {
-  console.log("Matrice : "+matrix)
 
   for(let i = 0; i< nbRow*nbLetter ; i++){
     matrix.push("0");
@@ -97,31 +110,37 @@ function Square({ letter, color }) {
   );
 }
 
-function InputArea({motSecret, matrix, nb_column, updateMatrix, colorMatrix, updateColorMatrix}){
-  console.log("Couleur : "+colorMatrix);
+function InputArea({motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes}){
   return (
     <div>
       <input type="text" id="inputText" onKeyDown={(event) => {
         if(event.code == "Enter"){
-          confirmEntry(motSecret, matrix, nb_column, updateMatrix, colorMatrix, updateColorMatrix);
+          confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes);
         }
       }}></input>
-      <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, nb_column, updateMatrix, colorMatrix, updateColorMatrix)}} >Ok</button>
+      <button id="inputConfirmation" onClick={() => {confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes)}} >Ok</button>
       <h2 id="Error_component" style={{color:"#ff5733"}}>Prout</h2>
       </div>
 
   );
 }
 
-function confirmEntry(motSecret, matrix, nb_column, updateMatrix, colorMatrix, updateColorMatrix){
+function confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes){
   let elt = document.getElementById("inputText");
   let elt_error = document.getElementById("Error_component")
   let valeur = elt.value.toUpperCase();
   if(valeur.length == motSecret.length){
     elt_error.innerHTML = "";
-    console.log("Le mot essayé est : "+valeur);
     elt.value = "";
-    writeInBoard(matrix, nb_column, updateMatrix, valeur, colorMatrix, updateColorMatrix, motSecret);
+
+    writeInBoard(matrix, nb_column, updateMatrix, valeur, colorMatrix, updateColorMatrix, motSecret, setTentativeRestantes);
+
+    setTentativeRestantes(tentativeRestantes-1);
+    //On vérifie si la partie est finie, soit on a trouvé le mot, soit on a rempli toutes les lignes
+    if(motSecret == valeur || tentativeRestantes==0){
+      console.log("Partie finie");
+      setJeuFinie(true);
+    }
   }
   else{
     elt_error.innerHTML = "Entrée pas de la bonne taille";
@@ -175,7 +194,6 @@ function whichRowToWrite(matrix, nb_column){
 
 function writeInBoard(matrix, nb_column, updateMatrix, text, colorMatrix, updateColorMatrix, motSecret){
   let row = whichRowToWrite(matrix, nb_column);
-  console.log("Ligne à écrire : "+row);
   const nouvelle_matrice = [...matrix];
   const nouvelle_couleurs = [...colorMatrix];
   for (let i = 0; i < text.length; i++){
