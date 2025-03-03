@@ -5,10 +5,14 @@ import './App.css'
 import winGif from './assets/win.gif' // Importez le GIF de victoire
 import loseGif from './assets/lose.gif' // Importez le GIF de défaite
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "../node_modules/firebase/app";
+import { getDatabase, ref, get } from "../node_modules/firebase/database";
+
 export default App
 const empty_char = ' '; //Caractère vide dans la matrice
 
-function App() {
+function App() { 
   const [secretWord, setSecretWord] = useState("");
   const [mat, setMatrix] = useState([]);
   const [colorMatrix, setColorMatrix] = useState([]);
@@ -17,16 +21,34 @@ function App() {
   const [partieGagnee, setPartieGagnee] = useState(false);
 
   useEffect(() => {
-    fetch("/src/assets/mots.json")
-      .then((res) => res.json())
-      .then((data) => {
-        const mots = data.mots;
-        const randomIndex = Math.floor(Math.random() * mots.length);
-        setSecretWord(mots[randomIndex].toUpperCase());
-      })
-      .catch((e) => console.error(e));
-  }, []);
+    const firebaseConfig = {
+      apiKey: "AIzaSyBwO1HZDQQkVkyc5Nxaz7Ag0onTIFv6t0g",
+      authDomain: "guesstheword-7e701.firebaseapp.com",
+      databaseURL: "https://guesstheword-7e701-default-rtdb.firebaseio.com",
+      projectId: "guesstheword-7e701",
+      storageBucket: "guesstheword-7e701.firebasestorage.app",
+      messagingSenderId: "764898129295",
+      appId: "1:764898129295:web:d2ebfba43199d85df647fa",
+      measurementId: "G-SEHP0WBXH2"
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const motsRef = ref(db, "mots");
+
+    get(motsRef).then((snapshot) => {
+      const mots = snapshot.val();
+      if (mots === null) {
+        console.log("Aucune donnée trouvée pour 'mots'.");
+        return;
+      }
+      console.log(mots);
+      const randomIndex = Math.floor(Math.random() * mots.length);
+      setSecretWord(mots[randomIndex].toUpperCase());
+    }).catch((error) => {
+      console.error(error);
+    });
+  }, []);
 
   useEffect(() => {
     if (secretWord) {
@@ -131,7 +153,7 @@ function InputArea({ motSecret, matrix, nb_column, nbRow, updateMatrix, colorMat
         }
       }}></input>
       <button id="inputConfirmation" onClick={() => { confirmEntry(motSecret, matrix, nb_column, nbRow, updateMatrix, colorMatrix, updateColorMatrix, setJeuFinie, tentativeRestantes, setTentativeRestantes, setPartieGagnee) }} >Ok</button>
-      <h2 id="Error_component" style={{ color: "#ff5733" }}>Prout</h2>
+      <h2 id="Error_component" style={{ color: "#ff5733" }}></h2>
     </div>
   );
 }
