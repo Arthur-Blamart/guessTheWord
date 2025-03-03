@@ -112,7 +112,10 @@ function EcranFin({ partieGagnee }) {
 
 function Grid({ nbLetter, nbRow, matrix, colorMatrix }) {
   return (
-    <div style={{
+    <div 
+    class='container'
+    
+    style={{
       display: "grid",
       gridTemplateColumns: `repeat(${nbLetter}, 50px)`,
       gap: "12px"
