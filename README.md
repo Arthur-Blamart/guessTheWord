@@ -104,3 +104,20 @@ public/
 ## 📝 Contributions
 
 Pour contribuer, ouvrez une issue ou une pull request.
+
+---
+
+## 📱 Fonctionnalité : Ajout à l'écran d'accueil (PWA)
+
+L’application **Guess The Word** est conçue pour offrir une expérience optimale sur mobile grâce à son support PWA (Progressive Web App).
+
+Grâce au fichier [`manifest.json`](./manifest.json), toutes les icônes nécessaires sont définies :  
+lorsqu’un utilisateur ajoute le site à l’écran d’accueil de son smartphone, une icône personnalisée (`src/assets/moi.png`) s’affiche, tout comme le nom de l’application et les couleurs de thème.
+
+**Avantages de cette fonctionnalité :**
+- **Icônes multi-tailles** : Les icônes adaptées à différents écrans et résolutions sont déjà configurées.
+- **Nom et couleurs personnalisés** : L’application s’intègre parfaitement à l’interface du téléphone.
+- **Mode standalone** : L’application s’ouvre sans la barre d’adresse du navigateur, pour une expérience immersive, comme une vraie application native.
+
+> Pour profiter de cette fonctionnalité, ouvrez le site sur votre mobile et choisissez « Ajouter à l'écran d'accueil » dans le menu du navigateur.  
+> L’icône et le nom personnalisés apparaîtront automatiquement sur votre écran d’accueil.
