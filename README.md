@@ -1,33 +1,106 @@
-# Guess The word
+# 🎮 Guess The Word
 
-## Contexte :
-Projet personnel de refaire le celebre Wordle en utilisant React.
+**Projet personnel** — Un clone du célèbre jeu Wordle, développé avec React et hébergé sur Firebase.
 
-## Le jeu :
-Un mot secret est sélectionné, et le but du joueur est de le deviner en un nombre limité ou illimité d'essais.
+---
 
-À chaque essai, le joueur pourra voir quelles lettres sont correctement placées, quelles lettres sont présentes dans le mot mais mal placées, et quelles lettres ne sont pas du tout dans le mot secret.
+## 🚀 Présentation
 
-Pour cela, un code couleur sera utilisé : vert pour une lettre bien placée, jaune pour une lettre mal placée, et rouge pour une lettre absente du mot.
+Guess The Word est un jeu où le joueur doit deviner un mot secret en un nombre limité d'essais.  
+À chaque essai, un code couleur indique :
 
+- 🟩 **Vert** : Lettre bien placée
+- 🟨 **Jaune** : Lettre présente mais mal placée
+- 🟥 **Rouge** : Lettre absente du mot
 
-# Documentation
-## Build
-Pour générer le build de l'application qui sera installé dans
+---
+
+## 🛠️ Installation & Lancement
+
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/votre-utilisateur/guess-the-word.git
+cd guess-the-word
 ```
-npm run build
+
+### 2. Installer les dépendances
+
+```bash
+npm install
 ```
 
-## Lancer l'application en local
-Pour lancer l'application en local, on pourra s'y connecter sur http://localhost:5173/
-```
+### 3. Lancer l'application en local
+
+```bash
 npm run dev
 ```
 
-## Hébérgement
+Accédez à [http://localhost:5173/](http://localhost:5173/)
 
-L'application est hébergée sur Firebase, après avoir build les fichier elle peut être re-deployer avec la commande :
+---
+
+### 4. Ajout de la clé d'API
+
+Si vous désirez déployer la web-application sur firebase
+
+Créez un fichier `.env` à la racine du projet :
+
 ```
+API_KEY=VotreCléFirebaseIci
+```
+
+> **Ne partagez jamais votre clé API publiquement.**  
+> Le fichier `.env` est déjà ignoré par git.
+
+
+## 🏗️ Build de production
+
+Pour générer le build de l'application :
+
+```bash
+npm run build
+```
+
+Les fichiers seront générés dans le dossier `dist/`.
+
+---
+
+## ☁️ Déploiement Firebase
+
+Après avoir généré le build, déployez sur Firebase :
+
+```bash
 firebase deploy
 ```
-Elle est disponible à l'adresse : https://guesstheword-7e701.web.app/
+
+L'application est disponible à :  
+➡️ [https://guesstheword-7e701.web.app/](https://guesstheword-7e701.web.app/)
+
+---
+
+> **Pensez à lancer le Build de production avant déploiement.**  
+> **Rappel** : `npm run build`
+
+## 📁 Structure du projet
+
+```
+src/
+  ├── App.jsx
+  ├── App.css
+  ├── index.css
+  ├── main.jsx
+  └── assets/
+        ├── win.gif
+        ├── lose.gif
+        ├── mots.json
+        └── moi.png
+public/
+  └── index.html
+```
+
+---
+
+## 📝 Contributions
+
+Pour contribuer, ouvrez une issue ou une pull request.
