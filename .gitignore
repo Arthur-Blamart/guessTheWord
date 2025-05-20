@@ -1,12 +1,4 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
+# Ignore node_modules and build directories
 node_modules
 dist
 dist-ssr
@@ -14,13 +6,9 @@ dist-ssr
 
 # Ignore the environnement file
 .env
+
+# Ignore the Firebase configuration
+.firebase/
+
 # Editor directories and files
 .vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
