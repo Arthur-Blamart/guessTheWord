@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     const firebaseConfig = {
-      apiKey: "AIzaSyBwO1HZDQQkVkyc5Nxaz7Ag0onTIFv6t0g",
+      apiKey: import.meta.env.API_KEY,
       authDomain: "guesstheword-7e701.firebaseapp.com",
       databaseURL: "https://guesstheword-7e701-default-rtdb.firebaseio.com",
       projectId: "guesstheword-7e701",
